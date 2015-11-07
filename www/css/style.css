@@ -1,0 +1,294 @@
+@charset "UTF-8";
+
+/* Boilerplate: Reset
+============================================================ */
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{border:0;font-size:100%;font:inherit;vertical-align:baseline;margin:0;padding:0}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:none}table{border-collapse:collapse;border-spacing:0}
+
+/* Boilerplate: Responsive Layout
+============================================================ */
+.clearfix {
+  *zoom: 1;
+  &:before,
+  &:after {
+    display: table;
+    content: "";
+    line-height: 0;
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+.center {
+  float: none !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+.left { float: left !important; }
+.right { float: right !important; }
+.alignleft { text-align: left !important; }
+.alignright { text-align: right !important; }
+.aligncenter { text-align: center !important; }
+.hidden { display: none !important; }
+
+.half,
+.third,
+.quarter,
+.fifth,
+.sixth,
+.twothird,
+.twofifth,
+.threefifth,
+.fourfifth,
+.fivesixth,
+.threequarter {
+  margin-left: 2.127659574468085%;
+  float: left;
+  min-height: 1px;
+}
+.full {
+  float: left;
+  min-height: 1px;
+}
+
+.half:first-child,
+.third:first-child,
+.quarter:first-child,
+.fifth:first-child,
+.sixth:first-child,
+.twothird:first-child,
+.twofifth:first-child,
+.threefifth:first-child,
+.fourfifth:first-child,
+.fivesixth:first-child,
+.threequarter:first-child,
+.full:first-child { margin-left: 0; }
+
+.sixth { width: 14.893617021276595%; }
+.fifth { width: 18.297872340425535%; }
+.quarter { width: 23.404255319148938%; }
+.third { width: 31.914893617021278%; }
+.half { width: 48.93617021276596%; }
+.threequarter { width: 74.46808510638297%; }
+.twothird { width: 65.95744680851064%; }
+.twofifth { width: 38.72340425531915%; }
+.threefifth { width: 59.14893617021278%; }
+.fourfifth { width: 79.57446808510639%; }
+.fivesixth { width: 82.9787234042553%; }
+.full { width: 100%; }
+
+body {
+  color: #444;
+  height: auto;
+  background-image: url(../img/bg.png);
+  background-repeat: repeat;
+  font-family: 'Proxima Nova', Arial, Helvetica, sans-serif;
+}
+
+a {
+  color: #333;
+  text-decoration: none;
+  border-bottom: 1px dashed;
+}
+
+a:hover {
+  text-decoration: none;
+  border-bottom: 1px solid;
+  color: #ff4500;
+}
+
+p {
+  font-size: 1.1em;
+  margin-bottom: 1em;
+}
+
+p.large {
+  font-size: 1.2em;
+}
+
+p.larger {
+  color: #777;
+  font-size: 1.5em;
+}
+
+.container_fluid {
+  width: 100%;
+}
+
+.ribbon {
+  width: 100%;
+  height: 10px;
+  background: #ffe173 url(../img/header_strip.png) no-repeat top center;
+}
+
+.bold {
+  font-family: 'Proxima Nova Bold', Arial, Helvetica, sans-serif;
+}
+
+#logoLink {
+  padding: 30px;
+  display: block;
+  margin: 0 auto;
+  width: 273px;
+  height: 75px;
+}
+
+#logoLink a {
+	text-decoration: none;
+	border-bottom: 0;
+}
+
+.box legend {
+  color: #777;
+  font-size: 1.5em;
+  margin-left: 1m;
+  padding: 0.2em 0.8em;
+}
+
+.box fieldset {
+  background-color: white;
+  border: 1px #c1c1c1 solid;
+  border-radius: 4px;
+  padding: 0.2em 0.8em;
+}
+
+.content {
+  font-size: 1.1em;
+  padding: 0.8em;
+}
+
+.content li {
+  list-style-type: none;
+  background: url(../img/gist_icon.png) center left no-repeat;
+  padding-top: 5px;
+  padding-left: 20px;
+}
+
+.example {
+  padding-bottom: 40px;
+  height: 40px;
+}
+
+.icon {
+  float: left;
+  width: 42px;
+  height: 45px;
+}
+
+.icon img {
+  width: 30px;
+  height: 30px;
+  padding-top: 3px;
+}
+
+.example .icon {
+  background: url('../img/icons.png');
+  background-position: 0 0;
+  background-size: 250px 50px;
+}
+
+.example.facebook .icon {
+  background-position: 0px 0px;
+}
+
+.example.github .icon {
+  background-position: -83px 0px;
+}
+
+.example.twitter .icon {
+  background-position: -41px 0px;
+}
+
+.example.password .icon {
+  background-position: -166px 0px;
+}
+
+.description {
+  height: 40px;
+  padding: 8px 0px 8px 50px;
+}
+
+.description h4 {
+  margin: 0px;
+}
+
+img {
+  max-width: 100%;
+}
+
+#footer {
+  width: 100%;
+  margin: 130px auto 20px;
+  text-align: center;
+}
+
+#footer div {
+  display: inline-block;
+  padding: 0 25px;
+}
+
+@font-face {
+  font-family: 'Proxima Nova Bold';
+  src: url('../fonts/proximanova-bold-webfont.eot');
+  src: url('../fonts/proximanova-bold-webfont.eot?#iefix') format('embedded-opentype'),
+       url('../fonts/proximanova-bold-webfont.woff') format('woff'),
+       url('../fonts/proximanova-bold-webfont.ttf') format('truetype'),
+       url('../fonts/proximanova-bold-webfont.svg#proxima_nova_rgbold') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Proxima Nova Bold Italic';
+  src: url('../fonts/proximanova-boldit-webfont.eot');
+  src: url('../fonts/proximanova-boldit-webfont.eot?#iefix') format('embedded-opentype'),
+       url('../fonts/proximanova-boldit-webfont.woff') format('woff'),
+       url('../fonts/proximanova-boldit-webfont.ttf') format('truetype'),
+       url('../fonts/proximanova-boldit-webfont.svg#proxima_nova_rgbold_italic') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Proxima Nova Light Italic';
+  src: url('../fonts/proximanova-lightitalic-webfont.eot');
+  src: url('../fonts/proximanova-lightitalic-webfont.eot?#iefix') format('embedded-opentype'),
+       url('../fonts/proximanova-lightitalic-webfont.woff') format('woff'),
+       url('../fonts/proximanova-lightitalic-webfont.ttf') format('truetype'),
+       url('../fonts/proximanova-lightitalic-webfont.svg#proxima_nova_ltitalic') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Proxima Nova Light';
+  src: url('../fonts/proximanova-light-webfont.eot');
+  src: url('../fonts/proximanova-light-webfont.eot?#iefix') format('embedded-opentype'),
+       url('../fonts/proximanova-light-webfont.woff') format('woff'),
+       url('../fonts/proximanova-light-webfont.ttf') format('truetype'),
+       url('../fonts/proximanova-light-webfont.svg#proxima_nova_ltregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Proxima Nova';
+  src: url('../fonts/proximanova-regular-webfont.eot');
+  src: url('../fonts/proximanova-regular-webfont.eot?#iefix') format('embedded-opentype'),
+       url('../fonts/proximanova-regular-webfont.woff') format('woff'),
+       url('../fonts/proximanova-regular-webfont.ttf') format('truetype'),
+       url('../fonts/proximanova-regular-webfont.svg#proxima_nova_rgregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Proxima Nova Italic';
+  src: url('../fonts/proximanova-regularitalic-webfont.eot');
+  src: url('../fonts/proximanova-regularitalic-webfont.eot?#iefix') format('embedded-opentype'),
+       url('../fonts/proximanova-regularitalic-webfont.woff') format('woff'),
+       url('../fonts/proximanova-regularitalic-webfont.ttf') format('truetype'),
+       url('../fonts/proximanova-regularitalic-webfont.svg#proxima_nova_rgitalic') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}

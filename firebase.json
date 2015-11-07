@@ -1,0 +1,9 @@
+{
+  "firebase": "menehi",
+  "public": "www",
+  "ignore": [
+    "firebase.json",
+    "**/.*",
+    "**/node_modules/**"
+  ]
+}

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <link rel="stylesheet" href="css/text.css" />
+        <link rel="stylesheet" href="css/style.css" />
+        <link rel="stylesheet" href="js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.css"
+        <meta name="msapplication-tap-highlight" content="no" />
+        <title>Firebase + PhoneGap / Cordova Auth Demo</title>
+    </head>
+    <body>
+      <div class="header">
+        <div class="ribbon"></div>
+        <div id="logoLink">
+          <a href="http://www.firebase.com" target="_blank">
+            <img src="img/firebase_os_logo.png" alt="Firebase Logo"/>
+          </a>
+        </div>
+      </div>
+
+      <div class="fivesixth center alignleft clearfix">
+        <div class="full clearfix">
+          <br/>
+          <div class="box">
+            <fieldset>
+              <legend class="bold">Overview</legend>
+              <div class="content">
+                <p>
+                  Firebase allows you to authenticate users in your application
+                  using only client-side code. It is the simplest way to get up and
+                  running with security in your Firebase-powered application.
+                </p>
+                <p>
+                  See below for example snippets and to see a live demo of the
+                  each of the third-party authentication flows.
+                </p>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+
+        <div class="full">
+          <br/>
+          <div class="box">
+            <fieldset>
+              <legend class="bold">Supported Providers</legend>
+              <div class="content">
+                <p>
+                  Click any of the links below to see a live example of authentication in action.
+                </p>
+                <div class="example twitter">
+                  <div class="icon"></div>
+                  <div class="description">
+                    <h4>Twitter</h4>
+                    <p><a href="javascript:app.login('twitter');">Launch demo &raquo;</a></p>
+                  </div>
+                </div>
+                <div class="example password">
+                  <div class="icon"></div>
+                  <div class="description">
+                    <h4>Email / Password</h4>
+                    <p>Flexible UI: it's up to you!</p>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+
+        <div class="center">
+          <img src="img/hr.png"></img>
+        </div>
+
+        <div class="center">
+          <br/>
+          <p class="bold larger">
+            We want to hear from you!
+          </p>
+        </div>
+
+        <div class="center">
+          <p class="large">
+            Need some help?<br/>
+            <a target="_blank" href="mailto:support@firebase.com">support@firebase.com</a>
+          </p>
+        </div>
+        <div class="center">
+          <p class="large">
+            Have ideas? Need collaborators?<br/>
+            <a target="_blank" href="http://groups.google.com/group/firebase-talk">groups.google.com/firebase-talk</a>
+          </p>
+        </div>
+        
+        
+        <div id="deviceready">
+            <p class="event listening">Listening</p>
+            <p class="event received">Rarin' to go</p>
+        </div>
+      
+      
+      </div>
+      <script type="text/javascript" src="https://cdn.firebase.com/js/client/1.1.0/firebase.js"></script>
+      <script type="text/javascript" src="cordova.js"></script>
+      <script type="text/javascript" src="js/app.js"></script>
+      <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+      <script type="text/javascript" src="js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.js"></script>
+      <script type="text/javascript">
+          app.init();
+      </script>
+    </body>
+</html>
