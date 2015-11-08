@@ -33,8 +33,7 @@
                 </div>
             </div>
             <div id="map-page" class="page">
-              <div id="map" style="width:100%;height:100%">
-              </div>
+                <iframe src="map.html" style="width:100%;height:100%"></iframe>
             </div>
             <div id="history-page" class="page">
                 <table id="transaction-history"></table>
@@ -42,7 +41,7 @@
             
             <div id="settings-page" class="page">
                 
-        <!--<button id="opener-logout">Logout</button>-->
+                <button id="opener-logout" style="margin: 0 auto; top:40%;position:relative;display:block">Logout</button>
             </div>
         </div>
         
@@ -61,8 +60,8 @@
                     <input type="password" name="password" id="register-password" value="" class="text ui-widget-content ui-corner-all" />
                     
                 </fieldset>
-                <button id="opener-register">Register</button>
-                <button id="opener-login">Login</button>
+                <button id="opener-register" style="float:left">Register</button>
+                <button id="opener-login" style="float:right">Login</button>
             </div>
         </div>
        
@@ -70,7 +69,6 @@
         <script type="text/javascript" src="https://cdn.firebase.com/js/client/1.1.0/firebase.js"></script>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/app.js"></script>
-        <script src="js/map.js"></script>
         <!-- <script type="text/javascript" src="js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.js"></script> -->
     </body>
 </html>
