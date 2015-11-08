@@ -6,34 +6,39 @@
     
 <h1>Choose amount</h1>
 
-<p>Please input a number:</p>
-
+<p>Who are you donating to?</p>
+    
+<input id="person" type="text">    
+    
+<p>Amount:</p>
+    
 <input id="numb" type="number">
     
 <script src="https://checkout.stripe.com/checkout.js"></script>
 <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
     
-<button id="customButton">Purchase</button>
+<button id="customButton">Donate</button>
 
 <script>
+  var amt;
+  var prsn
   var handler = StripeCheckout.configure({
-    //key: 'pk_test_ZCy9PpWojSlWbJxJThmjNo0o',
     key: 'pk_test_ZCy9PpWojSlWbJxJThmjNo0o',
     image: '/img/documentation/checkout/marketplace.png',
     locale: 'auto',
     token: function(token) {
-      //Send token to server
+      $.post('http://127.0.0.1:5000/charge', data={clientToken: JSON.stringify(token), amount: amt, person: prsn}, crossDomain=true)
     }
   });
 
 $(function() {
   $('#customButton').on('click', function(e) {
-      var amt;
-      amt = document.getElementById("numb").value;
+      amt = document.getElementById("numb").value * 100;
+      prsn = document.getElementById("person").value;
     // Open Checkout with further options
     handler.open({
       name: 'Give',
-      description: 'To person',
+      description: 'To ' + prsn,
       currency: "usd",
       amount: amt
     });
