@@ -22,7 +22,7 @@
         <div id="body-view">
             <div id="main-page" class="page" style="position:relative;top:-25%">
                 <br /><br />
-                <div id="svg-container">        
+                <div id="svg-container" onclick="function()">        
                     <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve">
                       <g>
                         <circle opacity="0.54" fill="#FFFFFF" cx="475.2" cy="629.6" r="365"></circle>
@@ -31,6 +31,15 @@
                       </g>
                     </svg>
                 </div>
+                
+                <p>Who are you donating to?</p>
+    
+                <input id="person" type="text"></input>    
+    
+                <p>Amount:</p>
+    
+                <input id="numb" type="number"></input>
+                
             </div>
             <div id="map-page" class="page">
                 <iframe src="map.html" style="width:100%;height:100%"></iframe>
@@ -65,10 +74,48 @@
             </div>
         </div>
        
+        <script src="https://checkout.stripe.com/checkout.js"></script>
+        <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
         <script type="text/javascript" src="https://cdn.firebase.com/v0/firebase-simple-login.js"></script>
         <script type="text/javascript" src="https://cdn.firebase.com/js/client/1.1.0/firebase.js"></script>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/app.js"></script>
         <!-- <script type="text/javascript" src="js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.js"></script> -->
+
+        <script>
+            var amt;
+            var prsn;
+            var acct = 'acct_174s1kBJridYSbg9';
+            var handler = StripeCheckout.configure({
+                key: 'pk_test_ZCy9PpWojSlWbJxJThmjNo0o',
+                image: '/img/documentation/checkout/marketplace.png',
+                locale: 'auto',
+                token: function(token) {
+                $.post('http://127.0.0.1:5000/charge', data={clientToken: JSON.stringify(token), amount: amt, person: prsn, account: acct}, crossDomain=true)
+                }
+            });
+
+        $(function() {
+            $('#svg-container').on('click', function(e) {
+                console.log("hi");
+                amt = document.getElementById("numb").value * 100;
+                prsn = document.getElementById("person").value;
+                // Open Checkout with further options
+                handler.open({
+                name: 'Give',
+                description: 'To ' + prsn,
+                currency: "usd",
+                amount: amt
+                });
+                e.preventDefault();
+            });
+
+            // Close Checkout on page navigation
+            $(window).on('popstate', function() {
+                handler.close();
+            });
+            });
+        </script>
+        
     </body>
 </html>
