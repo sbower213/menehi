@@ -20,7 +20,7 @@
     </head>
     <body>
         <div id="body-view">
-            <div id="main-page" class="page" style="position:relative;top:-25%;padding:20px;">
+            <div id="main-page" class="page" style="position:relative;top:-25%;padding:20px;width:calc(20% - 40px);">
                 <br /><br />
                 <div id="svg-container">
                     <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve">
@@ -96,15 +96,35 @@
             var acct = 'acct_174s1kBJridYSbg9';
 
         $(function() {
+            var acct, charity;
+            window.addEventListener('message', function(event) {
+                /*// IMPORTANT: Check the origin of the data!
+                if (~event.origin.indexOf('http://yoursite.com')) {
+                    // The data has been sent from your site
+
+                    // The data sent with postMessage is stored in event.data
+                    console.log(event.data);
+                } else {
+                    // The data hasn't been sent from your site!
+                    // Be careful! Do not use it.
+                    return;
+                }*/
+                
+                charity = event.data.Name;
+                acct = event.data.stripeID;
+            });
             $('#svg-container').on('click', function(e) {
-                var recipientStripeID = $("#map-frame").contents().find("#closestStripeID").val();
                 
                 var handler = StripeCheckout.configure({
                     key: 'pk_test_ZCy9PpWojSlWbJxJThmjNo0o',
                     image: '/img/documentation/checkout/marketplace.png',
                     locale: 'auto',
                     token: function(token) {
+<<<<<<< HEAD
                     $.post('ec2-52-25-19-255.us-west-2.compute.amazonaws.com/charge', data={clientToken: JSON.stringify(token), amount: amt, person: prsn, account: acct, recipient: recipientStripeID}, crossDomain=true)
+=======
+                    $.post('http://127.0.0.1:5000/charge', data={clientToken: JSON.stringify(token), amount: amt, person: prsn, account: acct}, crossDomain=true)
+>>>>>>> origin/master
                     }
                 });
                         
@@ -118,6 +138,14 @@
                 currency: "usd",
                 amount: amt
                 });
+                
+                
+                var id = myUser.id;
+                var dbref = new Firebase("https://menehi.firebaseio.com/transactions/"+id);
+                
+                var newData = {};
+                newData["" + Date.now()] = { recipient: prsn, charity: charity, amount:amt};
+                dbref.set(newData);
                 e.preventDefault();
             });
 
