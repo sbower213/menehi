@@ -52,8 +52,9 @@
             <div id="map-page" class="page">
                 <iframe src="map.html" style="width:100%;height:100%" id="map-frame"></iframe>
             </div>
+            <!--<th>ID</th><th>Recipient</th><th>Charity</th><th>Amount</th>-->
             <div id="history-page" class="page">
-                <table id="transaction-history"><th>ID</th><th>Recipient</th><th>Charity</th><th>Amount</th></table>
+                <table id="transaction-history"></table>
             </div>
             
             <div id="settings-page" class="page">
@@ -137,11 +138,10 @@
                 
                 
                 var id = myUser.id;
-                var dbref = new Firebase("https://menehi.firebaseio.com/transactions/"+id);
+                var dbref = new Firebase("https://menehi.firebaseio.com/transactions/"+id + "/" + Date.now());
                 
-                var newData = {};
-                newData["" + Date.now()] = { recipient: prsn, charity: charity, amount:amt};
-                dbref.set(newData);
+                var newData = { recipient: prsn, charity: charity, amount:(amt/100)};
+                dbref.update(newData);
                 e.preventDefault();
                 
                 /*newData["" + date] = { recipient: prsn, charity: charity, amount:amt};
