@@ -98,7 +98,11 @@ function getTransactions() {
       var val = snapshot.val();
       console.log(val);
       for (var i in val) {
-          $("#transaction-history").append("<tr><td>"+i+"</td><td>"+val[i]+"</td></tr>");
+          if (typeof val[i] == "number") {
+            $("#transaction-history").append("<tr><td>"+i+"</td><td></td><td></td><td>"+val[i]+"</td></tr>");
+          } else {
+            $("#transaction-history").append("<tr><td>"+i+"</td><td>"+val[i].recipient + "</td><td>" + val[i].charity + "</td><td>" + val[i].amount + "</td></tr>");
+          }
           console.log(val[i]);
       }
     }, function (errorObject) {
