@@ -6,10 +6,8 @@ var ref = new Firebase("https://menehi.firebaseio.com");
 myUser = -1;
 
 $(function () {
-    $("#dialog-register").dialog({
-        autoOpen: false,
-        buttons: {
-            "ok": function () {
+    $("#opener-register").click(
+        function () {
 
                 var email = $("#register-email").val();
                 var password = $("#register-password").val();
@@ -22,39 +20,19 @@ $(function () {
                     }
                 });
 
-                $(this).dialog("close");
-            },
-            Cancel: function () {
-                $(this).dialog("close");
-            }
         }
-    });
+    );
 
-    $("#dialog-login").dialog({
-        autoOpen: false,
-        buttons: {
-            "ok": function () {
+    $("#opener-login").click(function () {
                 console.log('trying to login: ' + $("#login-email").val());
 
                 var email = $("#login-email").val();
                 var password = $("#login-password").val();
 
                 doLogin(email, password);
-                $(this).dialog("close");
-            },
-            Cancel: function () {
-                $(this).dialog("close");
-            }
         }
-    });
+    );
 
-    $("#opener-register").click(function () {
-        $("#dialog-register").dialog("open");
-    });
-
-    $("#opener-login").click(function () {
-        $("#dialog-login").dialog("open");
-    });
 
     $("#opener-logout").click(function () {
         authClient.logout();
@@ -68,7 +46,7 @@ function doLogin(email, password) {
     });
 };
 
-var authClient = new FirebaseAuthClient(ref, function (error, user) {
+var authClient = new FirebaseSimpleLogin(ref, function (error, user) {
     if (error) {
         alert(error);
         return;
@@ -81,6 +59,9 @@ var authClient = new FirebaseAuthClient(ref, function (error, user) {
         console.log('logged in')
         $("#opener-logout").attr('disabled', false);
         $("#opener-login").attr('disabled', true);
+        
+        $("#body-view").show();
+        $("#tab-bar").show();
     } else {
         // User is logged out.
         console.log('logged out');

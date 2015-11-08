@@ -5,8 +5,8 @@
   src: url(../fonts/Americanatest.ttf) format("truetype");
 }
 
-.svg-container{
-    
+.main-page{
+    -webkit-touch-callout: none;
 }
 
 body{
@@ -18,6 +18,7 @@ body{
     background-position: left top;
     background-size:cover;
     color: white;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
 fieldset{
@@ -44,4 +45,12 @@ fieldset{
 
 label{
     color: white;
+}
+
+#body-view {
+    visibility: hidden;
+}
+
+#tab-bar {
+    visibility: hidden;
 }

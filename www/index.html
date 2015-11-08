@@ -16,58 +16,100 @@
             $(document).ready(function(){
                 document.body.style.backgroundImage = "url('img/give-bg.png')";
                 $("#dialog-register").hide();
+                $("#svg-container").hide();
                 //$("#dialog-login").hide()
+                
+                $("#opener-login").click(function(){
+                   $("#dialog-login")
+                        .stop(true, true)
+                        .animate({
+                            width:"toggle",
+                            opacity:"toggle"
+                            },1000, function(){
+                                $("#svg-container")
+                                .show()
+                                /*.animate({
+                                    left:0,
+                                    width:"toggle",
+                                    opacity:"toggle"
+                                    },1000)
+                                }*/}
+                        
+                        )
+                        .hide();
+                });
+                
                 $("#login-caption").click(function(){
                     $("dialog-login").hide();
                 });
+                
+                
                 $("#show").click(function(){
                     $("p").show();
                 });
-            });
+                
+            });  
         </script>
-        <link rel="stylesheet" 
+        <link rel="stylesheet" >
     </head>
     <body>
-        <br /><br />
-        <div id="svg-container">        
-            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve">
-              <g>
-                <circle opacity="0.54" fill="#FFFFFF" cx="475.2" cy="629.6" r="365"></circle>
-                <circle fill="none" stroke="#000000" stroke-width="47" stroke-miterlimit="10" cx="475.2" cy="629.6" r="315.3"></circle>
-                <text x="310" y="725" font-family="Americana" font-size="250" fill="black">GIVE</text>
-              </g>
-            </svg>
+        <div id="body-view">
+            <div id="main-page" class="page">
+                <br /><br />
+                <div id="svg-container">        
+                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve">
+                      <g>
+                        <circle opacity="0.54" fill="#FFFFFF" cx="475.2" cy="629.6" r="365"></circle>
+                        <circle fill="none" stroke="#000000" stroke-width="47" stroke-miterlimit="10" cx="475.2" cy="629.6" r="315.3"></circle>
+                        <text x="310" y="725" font-family="Americana" font-size="250" fill="black">GIVE</text>
+                      </g>
+                    </svg>
+                </div>
+            </div>
+            <div id="map-page" class="page">
+                
+            </div>
+            <div id="history-page" class="page">
+            </div>
+            
+            <div id="settings-page" class="page">
+                
+        <!--<button id="opener-logout">Logout</button>-->
+            </div>
         </div>
-        <br /><br /><br />
-        <div id="dialog-register" title="Register new user">
-            <form>
+        
+        <div id="tab-bar">
+            
+        </div>
+
+            
+        <div id="login-page">
+            <div id="dialog-register" title="Register new user">
                 <fieldset>
                     <label for="name">Email</label>
                     <input type="text" name="email" id="register-email" class="text ui-widget-content ui-corner-all" />
                     
                     <label for="password">Password</label>
                     <input type="password" name="password" id="register-password" value="" class="text ui-widget-content ui-corner-all" />
+                    
                 </fieldset>
-            </form>
+                <button id="opener-register">Register</button>
+            </div>
+            <div id="dialog-login" title="Login user">
+                    <fieldset>
+                        <label for="name">Email</label>
+                        <input type="text" name="email" id="login-email" class="text ui-widget-content ui-corner-all" />
+                        <label for="password">Password</label>
+                        <input type="password" name="password" id="login-password" value="" class="text ui-widget-content ui-corner-all" />
+                    </fieldset>
+                    <button id="opener-login">Login</button>
+            </div>
         </div>
-        <div id="dialog-login" title="Login user">
-            <form>
-                <fieldset>
-                    <label for="name">Email</label>
-                    <input type="text" name="email" id="login-email" class="text ui-widget-content ui-corner-all" />
-                    <label for="password">Password</label>
-                    <input type="password" name="password" id="login-password" value="" class="text ui-widget-content ui-corner-all" />
-                </fieldset>
-            </form>
-        </div>
-        <button id="opener-register">Register</button>
-        <button id="opener-login">Login</button>
-        <button id="opener-logout">Logout</button>
        
+        <script type="text/javascript" src="https://cdn.firebase.com/v0/firebase-simple-login.js"></script>
         <script type="text/javascript" src="https://cdn.firebase.com/js/client/1.1.0/firebase.js"></script>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/app.js"></script>
         <!-- <script type="text/javascript" src="js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.js"></script> -->
-
     </body>
 </html>
