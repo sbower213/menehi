@@ -141,7 +141,7 @@
                 
                 var newData = {};
                 newData["" + Date.now()] = { recipient: prsn, charity: charity, amount:amt};
-                dbref.set(newData);
+                dbref.update(newData);
                 e.preventDefault();
                 
                 /*newData["" + date] = { recipient: prsn, charity: charity, amount:amt};

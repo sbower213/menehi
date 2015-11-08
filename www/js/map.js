@@ -20,6 +20,8 @@ $(function() {
 
 var currentLoc = {x:0,y:0};
 
+var map, gl;
+
 require([
 "esri/map",
 "esri/dijit/Search",
@@ -48,16 +50,17 @@ require([
 "esri/SpatialReference",
 "esri/geometry/Extent",
 "dojo/_base/array",
-
+"esri/layers/GraphicsLayer",
+    
 "dojo/domReady!"
 ], function (
     Map, Search, Font, Point, SpatialReference, SimpleMarkerSymbol, PictureMarkerSymbol, SimpleLineSymbol, Color, TextSymbol, registry, Button, parser, webMercatorUtils, Graphic, FeatureLayer, SimpleRenderer, TemporalRenderer,
-TimeClassBreaksAger, SimpleLineSymbol, TimeExtent, Locator, SpatialReference, Extent, arrayUtils)
+TimeClassBreaksAger, SimpleLineSymbol, TimeExtent, Locator, SpatialReference, Extent, arrayUtils, GraphicsLayer)
 
  {
     parser.parse();
 
-    var map, featureLayer;
+    var featureLayer;
     var OBJECTID_COUNTER = 1000;
     var TRACKID_COUNTER = 1;
     //onorientationchange doesn't always fire in a timely manner in Android so check for both orientationchange and resize
@@ -151,6 +154,9 @@ TimeClassBreaksAger, SimpleLineSymbol, TimeExtent, Locator, SpatialReference, Ex
       featureLayer.setRenderer(renderer);
       map.addLayer(featureLayer);
 
+      gl = new GraphicsLayer();
+      map.addLayer(gl);
+        
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(zoomToLocation, locationError);
         navigator.geolocation.watchPosition(showLocation, locationError);
@@ -300,9 +306,10 @@ TimeClassBreaksAger, SimpleLineSymbol, TimeExtent, Locator, SpatialReference, Ex
               new Color([r, g, b, 0.8])
             ).setOffset(5, 15);
             //add the location graphic and text with the address to the map 
-            map.graphics.add(locationGraphic);
+            gl.add(locationGraphic);
             console.log("adding graphic");
-            map.graphics.add(new Graphic(pointMeters, textSymbol));
+            gl.add(new Graphic(pointMeters, textSymbol));
+              
           }
 
           var ptAttr = evt.addresses[0].attributes;
@@ -311,11 +318,14 @@ TimeClassBreaksAger, SimpleLineSymbol, TimeExtent, Locator, SpatialReference, Ex
           var miny = parseFloat(ptAttr.Ymin);
           var maxy = parseFloat(ptAttr.Ymax);
 
-          var esriExtent = new Extent(minx, miny, maxx, maxy, new SpatialReference({wkid:4326}));
+          var esriExtent = new Extent(minx, miny, maxx, maxy, new SpatialReference({wkid:102100}));
           map.setExtent(webMercatorUtils.geographicToWebMercator(esriExtent));
 
+        
+          gl.refresh();
           //showResults(evt.addresses);
         });
+    
     
     function doSearchValue(vals) {
         locs = vals;
@@ -325,13 +335,6 @@ TimeClassBreaksAger, SimpleLineSymbol, TimeExtent, Locator, SpatialReference, Ex
         
         locator.outSpatialReference = map.spatialReference;
         for (key in vals) {
-            /*addresses.push({attributes:{
-                OBJECTID: i,
-                SingleLine: vals[key].Address.replace("\n","")
-            }});
-            i++;*/
-            
-            
             var options = {
               address: {SingleLine: vals[key].Address.replace("\n","")},
                 outFields:['*']
@@ -339,46 +342,6 @@ TimeClassBreaksAger, SimpleLineSymbol, TimeExtent, Locator, SpatialReference, Ex
             
             locator.addressToLocations(options);
         }
-        //console.log(addresses);
-        
-        //locator.addressesToLocations(addresses);
-        /*
-        $.getJSON("http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/geocodeAddresses",
-                  data={addresses:JSON.stringify(addresses),
-                       token:"T_Bd_XY5oi-WE6Gv4zratpWEE2jspnMbSjzloAQwShMLJHNU0wXFQvx4FCzA4sU6WoDzASL37P-EfegrWXPhZ0BCEssosukB7T-_wzI_WMZpMe0yBv1eiL-LCb6Zi9D8xfPfKCsZxVqTgSuSqBUAsw..",
-                       f:"pjson"},
-                  success=function(data)
-                  {
-                    console.log(data);
-                    for (loc in data.locations) {
-                        console.log(loc.location);
-                    }
-                  });
-        
-
-       //highlight symbol
-       var sms = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 12,
-          new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
-             new Color([255, 0, 0]), 0.8),
-          new Color([0, 0, 0, 0.35]));
-
-       //label text symbol
-       var ls = new TextSymbol().setColor(new Color([0, 0, 0, 0.9])).setFont(new Font("16px", Font.STYLE_NORMAL, Font.VARIANT_NORMAL, Font.WEIGHT_BOLD, "Arial")).setOffset(15, -5).setAlign(TextSymbol.ALIGN_START);
-
-       s.sources[0].highlightSymbol = sms; //set the symbol for the highlighted symbol
-       s.sources[0].labelSymbol = ls; //set the text symbol for the label
-
-       //If multiple results are found, it will default and select the first.
-        
-       for (var key in vals) {
-           var val = vals[key]
-           console.log(val);
-           if (val.Address != undefined) {
-                s.search(val.Address);
-           } else {
-               console.log("Undefined?");
-           }
-       } */
     }
     
     charityListeners.push(doSearchValue);
