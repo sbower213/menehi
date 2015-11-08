@@ -141,6 +141,7 @@
                 var dbref = new Firebase("https://menehi.firebaseio.com/transactions/"+id + "/" + Date.now());
                 
                 var newData = { recipient: prsn, charity: charity, amount:(amt/100)};
+
                 dbref.update(newData);
                 e.preventDefault();
                 
