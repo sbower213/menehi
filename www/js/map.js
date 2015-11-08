@@ -13,7 +13,9 @@ function getCharities() {
     });
 }
 
-getCharities();
+$(function() {
+    getCharities();
+});
 
 require([
 "esri/map",
@@ -39,10 +41,15 @@ require([
 "esri/symbols/SimpleLineSymbol",
 "esri/TimeExtent",
 
+"esri/tasks/locator",
+"esri/SpatialReference",
+"esri/geometry/Extent",
+"dojo/_base/array",
+
 "dojo/domReady!"
 ], function (
     Map, Search, Font, Point, SpatialReference, SimpleMarkerSymbol, PictureMarkerSymbol, SimpleLineSymbol, Color, TextSymbol, registry, Button, parser, webMercatorUtils, Graphic, FeatureLayer, SimpleRenderer, TemporalRenderer,
-TimeClassBreaksAger, SimpleLineSymbol, TimeExtent)
+TimeClassBreaksAger, SimpleLineSymbol, TimeExtent, Locator, SpatialReference, Extent, arrayUtils)
 
  {
     parser.parse();
@@ -69,7 +76,6 @@ TimeClassBreaksAger, SimpleLineSymbol, TimeExtent)
 
 
     function mapLoadedHandler(maploadEvent){
-      console.log("map loaded", maploadEvent);
 
       //create a layer definition for the gps points
        var layerDefinition = {
@@ -102,7 +108,6 @@ TimeClassBreaksAger, SimpleLineSymbol, TimeExtent)
             }
           ]
         };
-      console.log("shmap loaded", maploadEvent);
 
       var featureCollection = {
         layerDefinition: layerDefinition,
@@ -110,7 +115,6 @@ TimeClassBreaksAger, SimpleLineSymbol, TimeExtent)
       };
       featureLayer = new FeatureLayer(featureCollection);
 
-      console.log("shmap asdfadsfasdoaded", maploadEvent);
       //setup a temporal renderer
       var sms = new SimpleMarkerSymbol().setColor(new Color([255, 0, 0])).setSize(8);
       var observationRenderer = new SimpleRenderer(sms);
@@ -135,7 +139,6 @@ TimeClassBreaksAger, SimpleLineSymbol, TimeExtent)
         }
       ];
 
-      console.log("maap loaddded", maploadEvent);
       var ager = new TimeClassBreaksAger(infos, TimeClassBreaksAger.UNIT_MINUTES);
       var sls = new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
         new Color([255, 0, 0]), 3);
@@ -219,8 +222,115 @@ TimeClassBreaksAger, SimpleLineSymbol, TimeExtent)
     }, "");
 
     s.startup();
+    
+    
+    locator = new Locator("http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
 
+    var geocodeResults = [];
+    var locs = [];
+    
+    locator.on("address-to-locations-complete", function(evt) {
+          geocodeResults.push(evt.addresses[0]);
+          for (var key in locs) {
+                  /**********************************************************/
+              if (evt.addresses[0].address.substring(0,evt.addresses[0].address.indexOf(" "))
+                    === locs[key].Address.substring(0,locs[key].Address.indexOf(" "))) {
+                  // NO NO NO NO NO NO NO NO NO NO NO PLEASE CHANGE THIS
+                  /*
+                  *
+                  *
+                  *
+                  *
+                  *
+                  **********************************************************/
+                  evt.addresses[0].charity_name = locs[key].Name;
+                  console.log("MATCH?!");
+              }
+          }
+          map.graphics.clear();
+        
+          console.log(geocodeResults.length);
+          for (var i = 0; i < geocodeResults.length; i++) {
+              var geocodeResult = geocodeResults[i];
+            //create a random color for the text and marker symbol
+            var r = Math.floor(Math.random() * 250);
+            var g = Math.floor(Math.random() * 100);
+            var b = Math.floor(Math.random() * 100);
+
+            var symbol = new SimpleMarkerSymbol(
+              SimpleMarkerSymbol.STYLE_CIRCLE, 
+              20, 
+              new SimpleLineSymbol(
+                SimpleLineSymbol.STYLE_SOLID, 
+                new Color([r, g, b, 0.5]), 
+                10
+              ), new Color([r, g, b, 0.9]));
+            var pointMeters = webMercatorUtils.geographicToWebMercator(geocodeResult.location);
+            var locationGraphic = new Graphic(pointMeters, symbol);
+
+              
+              
+            var font = new Font().setSize("12pt").setWeight(Font.WEIGHT_BOLD);
+            var textSymbol = new TextSymbol(
+              geocodeResult.charity_name, 
+              font, 
+              new Color([r, g, b, 0.8])
+            ).setOffset(5, 15);
+            //add the location graphic and text with the address to the map 
+            map.graphics.add(locationGraphic);
+            map.graphics.add(new Graphic(pointMeters, textSymbol));
+          }
+
+          var ptAttr = evt.addresses[0].attributes;
+          var minx = parseFloat(ptAttr.Xmin);
+          var maxx = parseFloat(ptAttr.Xmax);
+          var miny = parseFloat(ptAttr.Ymin);
+          var maxy = parseFloat(ptAttr.Ymax);
+
+          var esriExtent = new Extent(minx, miny, maxx, maxy, new SpatialReference({wkid:4326}));
+          map.setExtent(webMercatorUtils.geographicToWebMercator(esriExtent));
+
+          //showResults(evt.addresses);
+        });
+    
     function doSearchValue(vals) {
+        locs = vals;
+        console.log("HAWEREAR");
+        addresses = [];
+        var i = 1;
+        
+        locator.outSpatialReference = map.spatialReference;
+        for (key in vals) {
+            /*addresses.push({attributes:{
+                OBJECTID: i,
+                SingleLine: vals[key].Address.replace("\n","")
+            }});
+            i++;*/
+            
+            
+            var options = {
+              address: {SingleLine: vals[key].Address.replace("\n","")},
+                outFields:['*']
+            };
+            
+            locator.addressToLocations(options);
+        }
+        //console.log(addresses);
+        
+        //locator.addressesToLocations(addresses);
+        /*
+        $.getJSON("http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/geocodeAddresses",
+                  data={addresses:JSON.stringify(addresses),
+                       token:"T_Bd_XY5oi-WE6Gv4zratpWEE2jspnMbSjzloAQwShMLJHNU0wXFQvx4FCzA4sU6WoDzASL37P-EfegrWXPhZ0BCEssosukB7T-_wzI_WMZpMe0yBv1eiL-LCb6Zi9D8xfPfKCsZxVqTgSuSqBUAsw..",
+                       f:"pjson"},
+                  success=function(data)
+                  {
+                    console.log(data);
+                    for (loc in data.locations) {
+                        console.log(loc.location);
+                    }
+                  });
+        
 
        //highlight symbol
        var sms = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 12,
@@ -236,11 +346,15 @@ TimeClassBreaksAger, SimpleLineSymbol, TimeExtent)
 
        //If multiple results are found, it will default and select the first.
         
-       for (var val in vals) {
-           if (val.address != undefined) {
-                s.search(val.address);
+       for (var key in vals) {
+           var val = vals[key]
+           console.log(val);
+           if (val.Address != undefined) {
+                s.search(val.Address);
+           } else {
+               console.log("Undefined?");
            }
-       }
+       } */
     }
     
     charityListeners.push(doSearchValue);
