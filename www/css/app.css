@@ -52,11 +52,13 @@ label{
 #body-view {
     height:80%;
     width:500%;
+    position: absolute;
 }
 
 .page {
     width:20%;
     height:100%;
+    display: inline-block;
 }
 
 #tab-bar {
@@ -80,6 +82,10 @@ label{
     font-family: helvetica, arial, sans-serif;
     
     display:inline-block;
+}
+
+.tab.selected {
+    background-color: rgba(0,0,0,.3);
 }
 
 .tab-bar-icon {

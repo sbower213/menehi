@@ -39,6 +39,12 @@ $(function () {
     });
 });
 
+function scrollToPage(index) {
+    $("#body-view").animate({left: -100 * index + "%"}, 400);
+    $(".tab").removeClass("selected");
+    $(".tab:eq(" + index + ")").addClass("selected");
+}
+
 function doLogin(email, password) {
     authClient.login('password', {
         email: email,
