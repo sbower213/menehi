@@ -120,7 +120,7 @@
                     image: '/img/documentation/checkout/marketplace.png',
                     locale: 'auto',
                     token: function(token) {
-                    $.post('http://127.0.0.1:5000/charge', data={clientToken: JSON.stringify(token), amount: amt, person: prsn, account: acct}, crossDomain=true)
+                    $.post('ec2-52-25-19-255.us-west-2.compute.amazonaws.com/charge', data={clientToken: JSON.stringify(token), amount: amt, person: prsn, account: acct, recipient: recipientStripeID}, crossDomain=true)
                     }
                 });
                         
