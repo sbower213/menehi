@@ -73,6 +73,7 @@ label{
 
 table{
   background-color: rgba(255,255,255,.8);
+  margin-top:20%;
   overflow-y: scroll;
   min-width: 100%;
   color: black;

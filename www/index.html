@@ -53,7 +53,7 @@
                 <iframe src="map.html" style="width:100%;height:100%" id="map-frame"></iframe>
             </div>
             <div id="history-page" class="page">
-                <table id="transaction-history"></table>
+                <table id="transaction-history"><th>ID</th><th>Recipient</th><th>Charity</th><th>Amount</th></table>
             </div>
             
             <div id="settings-page" class="page">
@@ -143,6 +143,12 @@
                 newData["" + Date.now()] = { recipient: prsn, charity: charity, amount:amt};
                 dbref.set(newData);
                 e.preventDefault();
+                
+                /*newData["" + date] = { recipient: prsn, charity: charity, amount:amt};
+                alert(date);
+                dbref.push(newData);
+                //dbref.set(newData);*/
+                
             });
 
             // Close Checkout on page navigation
