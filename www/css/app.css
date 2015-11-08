@@ -1,0 +1,47 @@
+@font-face {
+  font-family: 'Americana';
+  font-style: normal;
+  font-weight: 400;
+  src: url(../fonts/Americanatest.ttf) format("truetype");
+}
+
+.svg-container{
+    
+}
+
+body{
+    position: fixed;
+    overflow: hidden;
+    font-family: "Americana";
+    background-image: url("../img/give-bg.png");
+    background-repeat: no-repeat;
+    background-position: left top;
+    background-size:cover;
+    color: white;
+}
+
+fieldset{
+    width:90%;
+}
+
+.svg-circle{
+    position: absolute;
+    margin-top: 5%;
+    margin-left: 5%;
+}
+
+.give-text{
+    position: absolute;
+    size: ;
+}
+
+.circle {
+	border-radius: 50%;
+    background-color: black;
+    position: relative;
+    display: inline-block;
+}
+
+label{
+    color: white;
+}

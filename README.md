@@ -1,19 +1,8 @@
-## Firebase Authentication for PhoneGap / Cordova
+## "Menehi" is Javanese for "Giving"
 
-**Note:** OAuth authentication in PhoneGap / Cordova *requires* the `org.apache.cordova.inappbrowser` plugin.
+Do you feel bad when you pass by a homeless person but don't have cash on you?
 
-Firebase allows you to easily enable authentication in your Firebase-powered application
-using only client-side code. Currently supports authentication via the following methods in PhoneGap / Cordova:
+Menehi is a cross-platform app that allows you to make donations to local charities to help the homeless individuals in the area.
+Simply register a debit or credit card with your email address to have the ability to help the community, regardless of the amount of cash in your wallet.
 
-  * Email / Password
-  * Facebook
-  * GitHub
-  * Google
-  * Twitter
-
-See [https://www.firebase.com/docs/web/guide/user-auth.html](https://www.firebase.com/docs/web/guide/user-auth.html)
-for more information!
-
-License
--------
-[MIT](http://firebase.mit-license.org)
+Created at HackDuke 2015.
