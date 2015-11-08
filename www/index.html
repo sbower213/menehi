@@ -118,6 +118,12 @@
                 currency: "usd",
                 amount: amt
                 });
+                
+                
+                var id = myUser.id;
+                var dbref = new Firebase("https://menehi.firebaseio.com/transactions/"+id);
+                
+                dbref.set("" + Date.now(), { recipient: prsn, charity: $("#map-frame").contents().find("#closestName").val(), amount:amt} );
                 e.preventDefault();
             });
 

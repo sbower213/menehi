@@ -265,8 +265,10 @@ TimeClassBreaksAger, SimpleLineSymbol, TimeExtent, Locator, SpatialReference, Ex
               }
           }
         
-          if (closest !== undefined)
+          if (closest !== undefined) {
               $("#closestStripeID").val(closest.stripeID);
+              $("#closestName").val(closest.Name);
+          }
         
           map.graphics.clear();
           console.log("cleared graphics");
