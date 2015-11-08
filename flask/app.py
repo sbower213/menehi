@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 import stripe
 
 from datetime import timedelta
@@ -7,7 +7,7 @@ from flask import make_response, current_app
 from functools import update_wrapper
 
 import json
-
+import urllib
 import requests
 
 
@@ -54,6 +54,10 @@ def crossdomain(origin=None, methods=None, headers=None,
 
 app = Flask(__name__)
 app.config.from_pyfile('keys.cfg')
+app.config.from_pyfile('keys.cfg')
+app.config['SITE'] = 'https://connect.stripe.com'
+app.config['AUTHORIZE_URI'] = '/oauth/authorize'
+app.config['TOKEN_URI'] = '/oauth/token'
 
 @app.route('/')
 def index():
@@ -62,12 +66,14 @@ def index():
 @app.route('/charge', methods=['POST'])
 @crossdomain(origin='*')
 def charge():
+    print 'charge'
     stripe.api_key = app.config['API_KEY']
     
     # Get the credit card details submitted by the form
     amt = request.form['amount']
     token = json.loads(request.form['clientToken'])
     prsn = request.form['person']
+    account = request.form['account']
 
     # Create the charge on Stripe's servers - this will charge the user's card
     try:
@@ -75,33 +81,53 @@ def charge():
         amount=amt, # amount in cents, again
         currency="usd",
         source=token["id"],
-        description="To " + prsn 
+        description="To " + prsn,
+        destination=account
         )
-        data = {
-            'amount' = amount
-            'token' = token
-        }
-        requests.post('/pay', data=data)
-    except stripe.error.CardError as e:
+    except Exception as e:
         print e
         # The card has been declined
         pass
-
-@app.route('/pay', methods=['POST'])
-@crossdomain(origin='*')
-def pay():
-    stripe.api_key = app.config['API_KEY']
     
-    amt = request.form['amount']
-    token = request.form['token']
-    
+    print 'pay'
     stripe.Charge.create(
         amount=amt,
         currency='usd',
-        source=token,
-        destination={CONNECTED_STRIPE_ACCOUNT_ID}
+        source=token["id"],
+        destination=account
     )
-    
+    print 'pay done'
+
+@app.route('/authorize')
+def authorize():
+  site   = app.config['SITE'] + app.config['AUTHORIZE_URI']
+  params = {
+             'response_type': 'code',
+             'scope': 'read_write',
+             'client_id': app.config['CLIENT_ID']
+           }
+
+  # Redirect to Stripe /oauth/authorize endpoint
+  url = site + '?' + urllib.urlencode(params)
+  return redirect(url)
+
+@app.route('/oauth/callback')
+def callback():
+    code   = request.args.get('code')
+    data   = {
+        'client_secret': app.config['API_KEY'],
+        'grant_type': 'authorization_code',
+        'code': code
+    }
+
+    # Make /oauth/token endpoint POST request
+    url = app.config['SITE'] + app.config['TOKEN_URI']
+    resp = requests.post(url, params=data)
+    print resp.json().get('stripe_user_id')
+
+    # Grab access_token (use this as your user's API key)
+    token = resp.json().get('access_token')
+    return render_template('callback.html', token=token)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -70,6 +70,11 @@ var authClient = new FirebaseSimpleLogin(ref, function (error, user) {
         $("#body-view").show();
         $("#tab-bar").show();
         $("#login-page").hide();
+        
+        $(function() {
+          console.log("hello there");
+          getTransactions();
+        });
     } else {
         // User is logged out.
         console.log('logged out');
@@ -81,3 +86,23 @@ var authClient = new FirebaseSimpleLogin(ref, function (error, user) {
         $("#login-page").show();
     }
 });
+
+
+function getTransactions() {
+    
+    console.log(myUser.id);
+    var id = myUser.id;
+    var dbref = new Firebase("https://menehi.firebaseio.com/transactions/"+id);
+        
+    dbref.on("value", function(snapshot) {
+      var val = snapshot.val();
+      console.log(val);
+      for (var i in val) {
+          $("#transaction-history").append("<tr><td>"+i+"</td><td>"+val[i]+"</td></tr>");
+          console.log(val[i]);
+      }
+    }, function (errorObject) {
+      console.log("The read failed: " + errorObject.code);
+    });
+    $("#transaction-history").show();
+}
