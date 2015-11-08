@@ -14,43 +14,9 @@
         <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
         <script>
             $(document).ready(function(){
-                document.body.style.backgroundImage = "url('img/give-bg.png')";
-                $("#dialog-register").hide();
-                $("#svg-container").hide();
-                //$("#dialog-login").hide()
-                
-                $("#opener-login").click(function(){
-                   $("#dialog-login")
-                        .stop(true, true)
-                        .animate({
-                            width:"toggle",
-                            opacity:"toggle"
-                            },1000, function(){
-                                $("#svg-container")
-                                .show()
-                                /*.animate({
-                                    left:0,
-                                    width:"toggle",
-                                    opacity:"toggle"
-                                    },1000)
-                                }*/}
-                        
-                        )
-                        .hide();
-                });
-                
-                $("#login-caption").click(function(){
-                    $("dialog-login").hide();
-                });
-                
-                
-                $("#show").click(function(){
-                    $("p").show();
-                });
-                
+                //document.body.style.backgroundImage = "url('img/give-bg.png')";
             });  
         </script>
-        <link rel="stylesheet" >
     </head>
     <body>
         <div id="body-view">
@@ -86,23 +52,15 @@
         <div id="login-page">
             <div id="dialog-register" title="Register new user">
                 <fieldset>
-                    <label for="name">Email</label>
+                    <label for="email">Email</label>
                     <input type="text" name="email" id="register-email" class="text ui-widget-content ui-corner-all" />
-                    
+                    <br />
                     <label for="password">Password</label>
                     <input type="password" name="password" id="register-password" value="" class="text ui-widget-content ui-corner-all" />
                     
                 </fieldset>
                 <button id="opener-register">Register</button>
-            </div>
-            <div id="dialog-login" title="Login user">
-                    <fieldset>
-                        <label for="name">Email</label>
-                        <input type="text" name="email" id="login-email" class="text ui-widget-content ui-corner-all" />
-                        <label for="password">Password</label>
-                        <input type="password" name="password" id="login-password" value="" class="text ui-widget-content ui-corner-all" />
-                    </fieldset>
-                    <button id="opener-login">Login</button>
+                <button id="opener-login">Login</button>
             </div>
         </div>
        

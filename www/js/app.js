@@ -59,7 +59,8 @@ var authClient = new FirebaseSimpleLogin(ref, function (error, user) {
         console.log('logged in')
         $("#opener-logout").attr('disabled', false);
         $("#opener-login").attr('disabled', true);
-        
+        $("#login-page").hide();
+           
         $("#body-view").show();
         $("#tab-bar").show();
     } else {
