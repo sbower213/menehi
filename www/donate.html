@@ -1,0 +1,51 @@
+  
+<!-- Create buttons and custom amount box up here -->
+<!DOCTYPE html>
+<html>
+<body>
+    
+<h1>Choose amount</h1>
+
+<p>Please input a number:</p>
+
+<input id="numb" type="number">
+    
+<script src="https://checkout.stripe.com/checkout.js"></script>
+<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+    
+<button id="customButton">Purchase</button>
+
+<script>
+  var handler = StripeCheckout.configure({
+    //key: 'pk_test_ZCy9PpWojSlWbJxJThmjNo0o',
+    key: 'pk_test_ZCy9PpWojSlWbJxJThmjNo0o',
+    image: '/img/documentation/checkout/marketplace.png',
+    locale: 'auto',
+    token: function(token) {
+      //Send token to server
+    }
+  });
+
+$(function() {
+  $('#customButton').on('click', function(e) {
+      var amt;
+      amt = document.getElementById("numb").value;
+    // Open Checkout with further options
+    handler.open({
+      name: 'Give',
+      description: 'To person',
+      currency: "usd",
+      amount: amt
+    });
+    e.preventDefault();
+  });
+
+  // Close Checkout on page navigation
+  $(window).on('popstate', function() {
+    handler.close();
+  });
+  });
+</script>
+    
+</body>
+</html> 
