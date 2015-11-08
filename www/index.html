@@ -50,7 +50,7 @@
                 <input id="numb" type="number"></input>
             </div>
             <div id="map-page" class="page">
-                <iframe src="map.html" style="width:100%;height:100%"></iframe>
+                <iframe src="map.html" style="width:100%;height:100%" id="map-frame"></iframe>
             </div>
             <div id="history-page" class="page">
                 <table id="transaction-history"></table>
@@ -94,17 +94,20 @@
             var amt;
             var prsn;
             var acct = 'acct_174s1kBJridYSbg9';
-            var handler = StripeCheckout.configure({
-                key: 'pk_test_ZCy9PpWojSlWbJxJThmjNo0o',
-                image: '/img/documentation/checkout/marketplace.png',
-                locale: 'auto',
-                token: function(token) {
-                $.post('http://127.0.0.1:5000/charge', data={clientToken: JSON.stringify(token), amount: amt, person: prsn, account: acct}, crossDomain=true)
-                }
-            });
 
         $(function() {
             $('#svg-container').on('click', function(e) {
+                var recipientStripeID = $("#map-frame").contents().find("#closestStripeID").val();
+                
+                var handler = StripeCheckout.configure({
+                    key: 'pk_test_ZCy9PpWojSlWbJxJThmjNo0o',
+                    image: '/img/documentation/checkout/marketplace.png',
+                    locale: 'auto',
+                    token: function(token) {
+                    $.post('http://127.0.0.1:5000/charge', data={clientToken: JSON.stringify(token), amount: amt, person: prsn, account: acct, recipient: recipientStripeID}, crossDomain=true)
+                    }
+                });
+                        
                 console.log("hi");
                 amt = document.getElementById("numb").value * 100;
                 prsn = document.getElementById("person").value;
