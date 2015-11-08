@@ -18,6 +18,8 @@ $(function() {
     getCharities();
 });
 
+var currentLoc = {x:0,y:0};
+
 require([
 "esri/map",
 "esri/dijit/Search",
@@ -197,6 +199,7 @@ TimeClassBreaksAger, SimpleLineSymbol, TimeExtent, Locator, SpatialReference, Ex
 
         var pt = webMercatorUtils.geographicToWebMercator(new Point(location.coords.longitude,
           location.coords.latitude));
+        currentLoc = pt;
         var graphic = new Graphic(new Point(pt, map.spatialReference), null, attributes);
 
         featureLayer.applyEdits([graphic], null, null, function (adds){
@@ -230,6 +233,8 @@ TimeClassBreaksAger, SimpleLineSymbol, TimeExtent, Locator, SpatialReference, Ex
     var geocodeResults = [];
     var locs = [];
     
+    var closest = undefined;
+    
     locator.on("address-to-locations-complete", function(evt) {
           geocodeResults.push(evt.addresses[0]);
           for (var key in locs) {
@@ -245,9 +250,24 @@ TimeClassBreaksAger, SimpleLineSymbol, TimeExtent, Locator, SpatialReference, Ex
                   *
                   **********************************************************/
                   evt.addresses[0].charity_name = locs[key].Name;
-                  console.log("MATCH?!");
+                  
+                  if (locs[key].stripeID != undefined) {
+                     var merc = webMercatorUtils.geographicToWebMercator(evt.addresses[0].location);
+                      
+                      if (closest === undefined || (merc.x - currentLoc.x) * (merc.x - currentLoc.x) + (merc.y - currentLoc.y) * (merc.y - currentLoc.y) <
+                          (closest.x - currentLoc.x) * (closest.x - currentLoc.x) + (closest.y - currentLoc.y) * (closest.y - currentLoc.y)) {
+                          closest = locs[key];
+                          closest.x = merc.x;
+                          closest.y = merc.y;
+                      }
+                      
+                  }
               }
           }
+        
+          if (closest !== undefined)
+              $("#closestStripeID").val(closest.stripeID);
+        
           map.graphics.clear();
           console.log("cleared graphics");
         
