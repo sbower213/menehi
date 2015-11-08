@@ -8,6 +8,8 @@ from functools import update_wrapper
 
 import json
 
+import requests
+
 
 def crossdomain(origin=None, methods=None, headers=None,
                 max_age=21600, attach_to_all=True,
@@ -50,26 +52,18 @@ def crossdomain(origin=None, methods=None, headers=None,
         return update_wrapper(wrapped_function, f)
     return decorator
 
-stripe_keys = {
-    'secret_key': 'sk_test_36haZoFyvvVN4qVDrxXsTFlF',
-    'publishable_key': 'pk_test_ZCy9PpWojSlWbJxJThmjNo0o'
-}
-
-stripe.api_key = stripe_keys['secret_key']
-
 app = Flask(__name__)
+app.config.from_pyfile('keys.cfg')
 
 @app.route('/')
 def index():
-    return render_template('index.html', key=stripe_keys['publishable_key'])
+    return render_template('index.html', key=app.config['PUBLISH_KEY'])
 
 @app.route('/charge', methods=['POST'])
 @crossdomain(origin='*')
 def charge():
-    # Set your secret key: remember to change this to your live secret key in production
-    # See your keys here https://dashboard.stripe.com/account/apikeys
-    stripe.api_key = "sk_test_36haZoFyvvVN4qVDrxXsTFlF"
-
+    stripe.api_key = app.config['API_KEY']
+    
     # Get the credit card details submitted by the form
     amt = request.form['amount']
     token = json.loads(request.form['clientToken'])
@@ -83,10 +77,31 @@ def charge():
         source=token["id"],
         description="To " + prsn 
         )
+        data = {
+            'amount' = amount
+            'token' = token
+        }
+        requests.post('/pay', data=data)
     except stripe.error.CardError as e:
         print e
         # The card has been declined
         pass
+
+@app.route('/pay', methods=['POST'])
+@crossdomain(origin='*')
+def pay():
+    stripe.api_key = app.config['API_KEY']
+    
+    amt = request.form['amount']
+    token = request.form['token']
+    
+    stripe.Charge.create(
+        amount=amt,
+        currency='usd',
+        source=token,
+        destination={CONNECTED_STRIPE_ACCOUNT_ID}
+    )
+    
 
 if __name__ == '__main__':
     app.run(debug=True)
