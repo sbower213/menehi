@@ -1,110 +1,91 @@
-/*var app = (function() {
 
-  var firebaseRef = new Firebase('https://menehi.firebaseio.com');
-  var authClient = new FirebaseAuthClient(ref, function(error, user) {
-  if (error) {
-    alert(error);
-    return;
-  }
-  if (user) {
-    // User is already logged in.
-    doLogin(user);
-  } else {
-    // User is logged out.
-    showLoginBox();
-  }
-});
-  
-  var showAlert = function() {
-    var fn, args = arguments;
-    if (navigator && navigator.notification && navigator.notification.alert) {
-      fn = navigator.notification.alert(msg);
-    } else if (typeof alert === "function") {
-      fn = alert;
-    } else {
-      fn = console.log;
-    }
-    fn.apply(null, args);
-  }
+// CHANGE THIS to your own firebase
+var ref = new Firebase("https://menehi.firebaseio.com");
 
-  function login(provider) {
-    firebaseRef.authWithOAuthPopup(provider, function(error, authData) {
-      if (error) {
-        // an error occurred while attempting login
-        var message = 'An error occurred.';
-        showAlert(message, function(){}, 'Failure!', 'Close');
+// global user (is this a good thing?)
+myUser = -1;
 
-      } else {
-        // user authenticated with Firebase
-        var message = 'User ID: ' + authData.uid + ', Provider: ' + authData.provider;
-        showAlert(message, function(){}, 'Success!', 'Close');
+$(function () {
+    $("#dialog-register").dialog({
+        autoOpen: false,
+        buttons: {
+            "ok": function () {
 
-        // Log out so we can log in again with a different provider.
-        firebaseRef.unauth();
-      }
-    });
-  }
-  
-  return {
-    init: init,
-    login: login
-  };
-})();
-*/
-var app = {
-  
-    init: function() {
-        this.bindEvents();
-    },
-    // Bind Event Listeners
-    //
-    // Bind any events that are required on startup. Common events are:
-    // 'load', 'deviceready', 'offline', and 'online'.
-    bindEvents: function() {
-        document.addEventListener('deviceready', this.onDeviceReady, false);
-    },
-    // deviceready Event Handler
-    //
-    // The scope of 'this' is the event. In order to call the 'receivedEvent'
-    // function, we must explicitly call 'app.receivedEvent(...);'
-    onDeviceReady: function() {
-        app.receivedEvent('deviceready');
-        
-    },
-    // Update DOM on a Received Event
-    receivedEvent: function(id) {
-        //alert(id);
-    },
-    
-    register: function() {
-      var ref = new Firebase('https://menehi.firebaseio.com');
-        ref.createUser({
-          email    : $("#register-email").val(),
-          password : $("#register-password").val()
-        }, function(error, userData) {
-          if (error) {
-            console.log("Error creating user:", error);
-            alert("Failed!");
-          } else {
-            console.log("Successfully created user account with uid:", userData.uid);
-            alert("Success!");
-          }
-        });
-    },
-    
-    login: function() {
-      var ref = new Firebase("https://menehi.firebaseio.com");
-        ref.authWithPassword({
-          email    : $("#login-email").val(),
-          password : $("#login-password").val()
-        }, function(error, authData) {
-        if (error) {
-            console.log("Login Failed!", error);
-        } else {
-          console.log("Authenticated successfully with payload:", authData);
+                var email = $("#register-email").val();
+                var password = $("#register-password").val();
+                authClient.createUser(email, password, function (error, user) {
+                    if (!error) {
+                        console.log('logging new registered user');
+                        doLogin(email, password);
+                    } else {
+                        alert(error);
+                    }
+                });
+
+                $(this).dialog("close");
+            },
+            Cancel: function () {
+                $(this).dialog("close");
+            }
         }
-      });
+    });
+
+    $("#dialog-login").dialog({
+        autoOpen: false,
+        buttons: {
+            "ok": function () {
+                console.log('trying to login: ' + $("#login-email").val());
+
+                var email = $("#login-email").val();
+                var password = $("#login-password").val();
+
+                doLogin(email, password);
+                $(this).dialog("close");
+            },
+            Cancel: function () {
+                $(this).dialog("close");
+            }
+        }
+    });
+
+    $("#opener-register").click(function () {
+        $("#dialog-register").dialog("open");
+    });
+
+    $("#opener-login").click(function () {
+        $("#dialog-login").dialog("open");
+    });
+
+    $("#opener-logout").click(function () {
+        authClient.logout();
+    });
+});
+
+function doLogin(email, password) {
+    authClient.login('password', {
+        email: email,
+        password: password
+    });
+};
+
+var authClient = new FirebaseAuthClient(ref, function (error, user) {
+    if (error) {
+        alert(error);
+        return;
     }
-    
-  }
-  
+    if (user) {
+        // User is already logged in.
+        console.log('User ID: ' + user.id + ', Provider: ' + user.provider);
+        myUser = user;
+        // doLogin(user);
+        console.log('logged in')
+        $("#opener-logout").attr('disabled', false);
+        $("#opener-login").attr('disabled', true);
+    } else {
+        // User is logged out.
+        console.log('logged out');
+        $("#opener-logout").attr('disabled', true);
+        $("#opener-login").attr('disabled', false);
+        // ("#dialog-form").dialog("open");
+    }
+});
