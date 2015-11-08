@@ -14,6 +14,7 @@ function getCharities() {
 }
 
 $(function() {
+    console.log("gettin charitable");
     getCharities();
 });
 
@@ -248,6 +249,7 @@ TimeClassBreaksAger, SimpleLineSymbol, TimeExtent, Locator, SpatialReference, Ex
               }
           }
           map.graphics.clear();
+          console.log("cleared graphics");
         
           console.log(geocodeResults.length);
           for (var i = 0; i < geocodeResults.length; i++) {
@@ -278,6 +280,7 @@ TimeClassBreaksAger, SimpleLineSymbol, TimeExtent, Locator, SpatialReference, Ex
             ).setOffset(5, 15);
             //add the location graphic and text with the address to the map 
             map.graphics.add(locationGraphic);
+            console.log("adding graphic");
             map.graphics.add(new Graphic(pointMeters, textSymbol));
           }
 

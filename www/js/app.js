@@ -24,10 +24,10 @@ $(function () {
     );
 
     $("#opener-login").click(function () {
-                console.log('trying to login: ' + $("#login-email").val());
+                console.log('trying to login: ' + $("#register-email").val());
 
-                var email = $("#login-email").val();
-                var password = $("#login-password").val();
+                var email = $("#register-email").val();
+                var password = $("#register-password").val();
 
                 doLogin(email, password);
         }

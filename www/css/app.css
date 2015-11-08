@@ -58,7 +58,7 @@ label{
 .page {
     width:20%;
     height:100%;
-    display: inline-block;
+    float:left;
 }
 
 #tab-bar {
